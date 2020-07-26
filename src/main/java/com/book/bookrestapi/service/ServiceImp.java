@@ -6,6 +6,7 @@ import com.book.bookrestapi.repository.BookRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @org.springframework.stereotype.Service
@@ -46,5 +47,10 @@ public class ServiceImp implements Service{
     @Override
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Book> saveAll(List<Book> bookList) {
+        return bookRepository.saveAll(bookList);
     }
 }

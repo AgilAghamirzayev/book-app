@@ -5,17 +5,18 @@ import com.book.bookrestapi.exception.BookNotFoundException;
 import com.book.bookrestapi.service.ServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
-import javax.print.attribute.standard.MediaTray;
-import java.util.Collection;
 
-@Controller
+import java.util.Collection;
+import java.util.List;
+
+@RestController
+@RequestMapping("/books")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class BookController {
 
     private final ServiceImp serviceImp;
@@ -31,19 +32,27 @@ public class BookController {
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Book> save(Book book) {
+    @PostMapping
+    public ResponseEntity<Book> save(@RequestBody Book book) {
+        System.out.println(book);
         return new ResponseEntity<>(serviceImp.save(book),HttpStatus.OK);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping
     public ResponseEntity<Book> update(@RequestBody Book book) {
         return new ResponseEntity<>(serviceImp.update(book), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Book> delete(@PathVariable Long id) {
+        System.out.println(id);
         serviceImp.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/all")
+    public ResponseEntity<List<Book>> saveAll(@RequestBody List<Book> bookList) {
+        bookList.forEach(System.out::println);
+        return new ResponseEntity<>(serviceImp.saveAll(bookList), HttpStatus.OK);
     }
 }
